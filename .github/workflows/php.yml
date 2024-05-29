@@ -1,0 +1,70 @@
+name: Build and Push Docker Image php
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 17 1,15 * *' # Run on the 1st and 15th of each month at 17:00 UTC
+  push:
+    branches:
+      - master
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # Package tag name
+  PACKAGE_TAG: php
+
+permissions:
+  actions: read
+  packages: write
+
+concurrency:
+  group: php${{ github.ref }}-1
+  cancel-in-progress: true
+
+jobs:
+  push:
+    name: "php${{ matrix.tag }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tag:
+          - 7.1
+          - 7.2
+          - 7.3
+          - 7.4
+          - "8.0"
+          - 8.1
+          - 8.2
+          - 8.3
+    steps:
+      # Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Set up BuildKit Docker container builder to be able to build
+      # multi-platform images and export cache
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          buildkitd-flags: --debug
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Login to ${{ env.REGISTRY }} Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ env.PACKAGE_TAG }}${{ matrix.tag }}
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository }}:${{ env.PACKAGE_TAG }}${{ matrix.tag }}
