@@ -1,79 +1,22 @@
-# Docker for Laravel
-Docker compose setup untuk menjalankan aplikasi Laravel.
+# BUSSINES UNDERSTANDING
+## Bussiness Background
+Bisnis ini berfokus pada penyediaan layanan supir khusus untuk Universitas Esa Unggul. Saat ini, manajemen supir dan kendaraan dilakukan secara manual, yang menyebabkan berbagai masalah efisiensi yang rendah dan kurangnya transparansi. Untuk mengatasi masalah tersebut, solusi yang diusulkan adalah pembuatan website khusus yang dapat mendata supir.
 
-## Cara menggunakan
-1. Clone repository ini ke dalam mesin lokal Anda.
-2. Masuk ke direktori proyek.
-3. Jalankan perintah berikut untuk menjalankan kontainer
-    ```
-    docker-compose up -d --build
-    ```
-4. Akses aplikasi Laravel di `http://localhost`.
-### Cara umum untuk menginstall aplikasi Laravel
-1. Siapkan File laravel
-2. Paste filenya ke folder `src`
-3. Jalankan perintah berikut untuk membuat container
-    ```
-    docker-compose up -d --build
-    ```
-4. Masuk ke dalam container
-    ```
-    docker-compose exec php-for-laravel bash
-    ```
-5. Install laravel
-    ```
-    composer install
-    ```
-6. Ubah Permission
-    ```
-    chmod -R 777 storage/*
-    ```
-7. Setting Database
-    ```
-    cp .env.example .env
-    ```
-    ```
-    nano .env
-    ```
-    ```
-    DB_CONNECTION=mysql
-    DB_HOST=db
-    DB_PORT=3306
-    DB_DATABASE=laravel
-    DB_USERNAME=root
-    DB_PASSWORD=p455w0rd
-    ```
-    ```
-    php artisan key:generate
-    ```
-    ```
-    php artisan migrate
-    ```
-    ```
-    php artisan db:seed
-    ```
-8. Akses aplikasi Laravel di `http://localhost`.
-## Konfigurasi
-Anda dapat menyesuaikan setup Docker dengan mengubah file `docker-compose.yml`.
-### Mengganti versi PHP
-Untuk mengganti versi PHP yang digunakan, ubah `PHP_VERSION` pada file `.env`.
-### Membandingkan Module PHP
+## Objective
+Tujuan dibuatnya website ini agar data supir lebih mudah diakses melalui website, didalam website akan disediakan fitur untuk mengakses, menghapus, mengubah, dan menambah data.
 
-| Module PHP                     | PHP 8.3 | PHP 8.2 | PHP 8.1 | PHP 8.0 | PHP 7.4 | PHP 7.3 | PHP 7.2 | PHP 7.1 |
-| ------------------------------ | ------- | ------- | ------- | ------- | ------- | ------- | ------- | ------- |
-| soap                           |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| exif                           |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| pcntl                          |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| intl                           |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| gmp                            |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| zip                            |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| pdo_mysql                      |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| pdo_pgsql                      |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| bcmath                         |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| redis                          |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ❌   |
-| mongodb                        |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ❌   |   ❌   |    ❌   |   ❌   |
-| imagick                        |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| gd                             |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
-| gd --with-freetype --with-jpeg |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ❌   |   ❌   |    ❌   |   ✔️   |
-| xdebug                         |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ❌   |   ❌   |    ❌   |   ❌   |
-| memcached                      |   ✔️   |    ✔️   |   ✔️   |   ✔️    |    ✔️   |   ✔️   |    ✔️   |   ✔️   |
+## Scope
+-	Menyimpan dan mengelola data supir
+-	User interface website untuk mengelola dan melihat data supir.
+
+## Requirement
+Website ini membutuhkan web server dengan framework laravel yang berjalan sebagai back-end dan framework Bootstrap sebagai front-endnya.
+Workflow
+### Membuka Website:
+Buka Browser > ketikan url website > tampil halaman utamanya
+### Menambah data:
+Pada halaman klik tombol tambah > masukkan data > tekan tombol save > data disimpan ke database > dikembalikan ke halaman utama
+### Mengubah data:
+Pada halaman utama pilih data yang ingin diubah > klik tombol ubah > masukkan data > tekan tombol save > data disimpan ke database > dikembalikan ke halaman utama
+### Menghapus data:
+Pada halaman utama pilih data yang ingin dihapus > klik tombol hapus
