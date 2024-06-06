@@ -1,15 +1,10 @@
 services:
-  php-for-laravel:
-    # jika menggunakan build
-    # build: ./php${PHP_VERSION}
-    # image: php-for-laravel:latest
-    # jika menggunakan image
-    image: ghcr.io/taufikmaulana405/docker-for-laravel:php${PHP_VERSION}
-    container_name: php-for-laravel
-    hostname: "php-for-laravel"
+  php:
+    image: ghcr.io/taufikmaulana405/docker-for-laravel:php8.3
+    container_name: php
+    hostname: "php"
     volumes:
       - ./src:/var/www/html
-      - ./php${PHP_VERSION}/www.conf:/usr/local/etc/php-fpm.d/www.conf
     working_dir: /var/www/html
     depends_on: 
       - db
@@ -29,20 +24,17 @@ services:
       MYSQL_ROOT_PASSWORD: p455w0rd
       TZ: Asia/Jakarta
       SERVICE_TAGS: dev
-      SERVICE_NAME: mysql  
-  nginx-for-laravel:
-    build: ./nginx
-    image: nginx-for-laravel:latest
-    container_name: nginx-for-laravel
-    hostname: "nginx-for-laravel"
+      SERVICE_NAME: mysql
+  nginx:
+    image: ghcr.io/taufikmaulana405/docker-for-laravel:nginx
+    container_name: nginx
+    hostname: "nginx"
     ports:
       - "80:80"
     volumes:
       - ./src:/var/www/html
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - php-for-laravel
-  # phpmyadmin
+      - php
   phpmyadmin:
     depends_on:
       - db
